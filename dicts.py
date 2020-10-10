@@ -1,38 +1,3 @@
-import logging
-from datetime import datetime
-
-import colorama
-from pymongo import MongoClient
-
-logging.basicConfig(filename="clear_rcom_buffer.log", level=logging.DEBUG)
-logging.info("Starting program")
-client = MongoClient("mongodb://localhost:27017/")
-db = client.DBClientsPPK
-listy = []
-dt_string = datetime.now()
-colorama.init()
-
-msg_list = {
-    104: "нет сети 220в ",
-    105: "Восстановление сети 220В ",
-    63: "Проверка связи:  УСПЕШНО ",
-    106: "Питание для аккумулятора в норме ",
-    64: "Взят под охрану ",
-    8: "Идентификация ответственного ",
-    107: "Аккумулятор разряжен ",
-    120: "Шлейф неисправен ",
-    88: "Норма шлейфа  ",
-    48: "Открыта крышка",
-    58: 'Авария питания (1) Модуль "СМ16" ',
-    108: "Открыта дверца ",
-    109: "Закрыта дверца ",
-    72: "Снят с охраны ",
-    80: "Обрыв шлейфа ",
-    50: "Закрыта крышка",
-    56: 'Питание в норме  Адаптер "Дунай АД8" ',
-    89: "Ответ на опрос Взят под охрану ",
-    1: "Ответ на опрос Норма шлейфа ",
-}
 
 individual_results = {
     104: "нет сети 220в ",
@@ -162,5 +127,3 @@ merged_dict = {
     **poll_line_normal_128_2,
     **poll_line_break_128,
 }
-
-
