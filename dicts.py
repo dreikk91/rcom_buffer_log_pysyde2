@@ -1,4 +1,3 @@
-
 individual_results = {
     104: "нет сети 220в ",
     105: "Восстановление сети 220В ",
@@ -53,29 +52,29 @@ poll_module_tamper_open = {
     12559 + i: "Открыта крышка адаптера %s (Опрос)" % str(i) for i in range(1, 33)
 }
 
-guard_on = { 16399 + i: "Взято под охрану %s" % str(i) for i in range(1, 1129) }
+guard_on = {16399 + i: "Взято под охрану %s" % str(i) for i in range(1, 1129)}
 poll_guard_on = {
     16655 + i: "Група взято под охрану %s (Опрос)" % str(i) for i in range(1, 129)
 }
-guard_off = { 18447 + i: "Снятие группы %s" % str(i) for i in range(1, 129) }
+guard_off = {18447 + i: "Снятие группы %s" % str(i) for i in range(1, 129)}
 poll_guard_off = {
     18703 + i: "Група знято с охраны %s (Опрос)" % str(i) for i in range(1, 129)
 }
 
-module_lost = { 13327 + i: "Нет связи с адаптером %s" % str(i) for i in range(1, 129) }
+module_lost = {13327 + i: "Нет связи с адаптером %s" % str(i) for i in range(1, 129)}
 module_ok = {
     13839 + i: "Связь с адаптером востановлена %s" % str(i) for i in range(1, 129)
 }
 
-line_break = { 20495 + i: "Обрыв шлейфа %s" % str(i) for i in range(1, 129) }
-line_break_128 = { 20975 + i: "Обрыв шлейфа %s" % str(i) for i in range(1, 129) }
-poll_line_break = { 20751 + i: "Обрыв шлейфа %s (Опрос)" % str(i) for i in range(1, 129) }
+line_break = {20495 + i: "Обрыв шлейфа %s" % str(i) for i in range(1, 129)}
+line_break_128 = {20975 + i: "Обрыв шлейфа %s" % str(i) for i in range(1, 129)}
+poll_line_break = {20751 + i: "Обрыв шлейфа %s (Опрос)" % str(i) for i in range(1, 129)}
 poll_line_break_128 = {
     21711 + i: "Обрыв шлейфа %s (Опрос)" % str(i) for i in range(1, 129)
 }
-line_normal = { 22543 + i: "Норма шлейфа %s" % str(i) for i in range(1, 129) }
-line_normal_128 = { 23023 + i: "Норма шлейфа %s" % str(i) for i in range(1, 129) }
-line_normal_128_1 = { 23503 + i: "Норма шлейфа %s" % str(i) for i in range(1, 129) }
+line_normal = {22543 + i: "Норма шлейфа %s" % str(i) for i in range(1, 129)}
+line_normal_128 = {23023 + i: "Норма шлейфа %s" % str(i) for i in range(1, 129)}
+line_normal_128_1 = {23503 + i: "Норма шлейфа %s" % str(i) for i in range(1, 129)}
 poll_line_normal = {
     22799 + i: "Норма шлейфа %s (Опрос)" % str(i) for i in range(1, 129)
 }
@@ -91,10 +90,10 @@ poll_line_normal_128_2 = {
 poll_line_normal_128_3 = {
     23983 + i: "Норма шлейфа группа %s (Опрос)" % str(i) for i in range(1, 129)
 }
-poll_line_sc = { 28943 + i: "КЗ шлейфа %s (Опрос)" % str(i) for i in range(1, 129) }
-line_sc = { 30735 + i: "КЗ шлейфа %s" % str(i) for i in range(1, 129) }
-open_box = { 12303 + i: "Открыта крышка %s" % str(i) for i in range(1, 129) }
-close_box = { 12815 + i: "Закрыта крышка %s" % str(i) for i in range(1, 129) }
+poll_line_sc = {28943 + i: "КЗ шлейфа %s (Опрос)" % str(i) for i in range(1, 129)}
+line_sc = {30735 + i: "КЗ шлейфа %s" % str(i) for i in range(1, 129)}
+open_box = {12303 + i: "Открыта крышка %s" % str(i) for i in range(1, 129)}
+close_box = {12815 + i: "Закрыта крышка %s" % str(i) for i in range(1, 129)}
 
 merged_dict = {
     **individual_results,
