@@ -77,7 +77,8 @@ poll_module_power_good = {
 }
 
 poll_module_connection_ok = {
-    14095 + i: "Связь с адаптером востановлена %s (Опрос)" % str(i) for i in range(1, 33)
+    14095 + i: "Связь с адаптером востановлена %s (Опрос)" % str(i)
+    for i in range(1, 33)
 }
 
 poll_module_tamper_ok = {
@@ -104,15 +105,27 @@ module_ok = {
 line_break = { 20495 + i: "Обрыв шлейфа %s" % str(i) for i in range(1, 129) }
 line_break_128 = { 20975 + i: "Обрыв шлейфа %s" % str(i) for i in range(1, 129) }
 poll_line_break = { 20751 + i: "Обрыв шлейфа %s (Опрос)" % str(i) for i in range(1, 129) }
-poll_line_break_128 = { 21711 + i: "Обрыв шлейфа %s (Опрос)" % str(i) for i in range(1, 129) }
+poll_line_break_128 = {
+    21711 + i: "Обрыв шлейфа %s (Опрос)" % str(i) for i in range(1, 129)
+}
 line_normal = { 22543 + i: "Норма шлейфа %s" % str(i) for i in range(1, 129) }
 line_normal_128 = { 23023 + i: "Норма шлейфа %s" % str(i) for i in range(1, 129) }
 line_normal_128_1 = { 23503 + i: "Норма шлейфа %s" % str(i) for i in range(1, 129) }
-poll_line_normal = { 22799 + i: "Норма шлейфа %s (Опрос)" % str(i) for i in range(1, 129) }
-poll_line_normal_128 = { 24239 + i: "Норма шлейфа %s (Опрос)" % str(i) for i in range(1, 129) }
-poll_line_normal_128_1 = { 23281 + i: "Норма шлейфа группа %s (Опрос)" % str(i) for i in range(1, 129) }
-poll_line_normal_128_2 = { 23759 + i: "Норма шлейфа группа %s (Опрос)" % str(i) for i in range(1, 129) }
-poll_line_normal_128_3 = { 23983 + i: "Норма шлейфа группа %s (Опрос)" % str(i) for i in range(1, 129) }
+poll_line_normal = {
+    22799 + i: "Норма шлейфа %s (Опрос)" % str(i) for i in range(1, 129)
+}
+poll_line_normal_128 = {
+    24239 + i: "Норма шлейфа %s (Опрос)" % str(i) for i in range(1, 129)
+}
+poll_line_normal_128_1 = {
+    23281 + i: "Норма шлейфа группа %s (Опрос)" % str(i) for i in range(1, 129)
+}
+poll_line_normal_128_2 = {
+    23759 + i: "Норма шлейфа группа %s (Опрос)" % str(i) for i in range(1, 129)
+}
+poll_line_normal_128_3 = {
+    23983 + i: "Норма шлейфа группа %s (Опрос)" % str(i) for i in range(1, 129)
+}
 poll_line_sc = { 28943 + i: "КЗ шлейфа %s (Опрос)" % str(i) for i in range(1, 129) }
 line_sc = { 30735 + i: "КЗ шлейфа %s" % str(i) for i in range(1, 129) }
 open_box = { 12303 + i: "Открыта крышка %s" % str(i) for i in range(1, 129) }
@@ -161,7 +174,8 @@ merged_dict = {
 #     msg_id_list = f.read()
 #     msg_id_list = json.loads(msg_id_lis
 
-class Generate_data():
+
+class Generate_data:
     def __init__(self):
         self.merged_dict = {
             **individual_results,

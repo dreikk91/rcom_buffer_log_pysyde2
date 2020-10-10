@@ -95,8 +95,6 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_Rcom_buffer, dicts.Generate_da
                                 + dicts.merged_dict[id_msg_keys]
                             )
                             self.diff_list.append(msg["_id"])
-                            # self.textBrowser.append(self.text)
-                            # self.textBrowser.update()
                             self.text_field.append(self.text)
                             self.progressBar.setValue(len(self.diff_list))
                             QCoreApplication.processEvents()
@@ -130,9 +128,6 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_Rcom_buffer, dicts.Generate_da
                                     None,
                                 )
                             )
-                            # time.sleep(0.1)
-                # time.sleep(1.5 * collection_count)
-
                 time.sleep(0.09)
                 if len(self.diff_list) > 15000:
                     self.diff_list.clear()
@@ -141,7 +136,6 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_Rcom_buffer, dicts.Generate_da
                 if len(self.events) > 50000:
                     self.events.clear()
             except NameError as err:
-                # self.textBrowser.append(err)
                 self.text_field.append(err)
                 logger.debug(self.text)
             except KeyError:
