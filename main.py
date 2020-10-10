@@ -1,4 +1,3 @@
-import os  # Отсюда нам понадобятся методы для отображения содержимого директорий
 import sys  # sys нужен для передачи argv в QApplication
 import time
 from datetime import datetime
@@ -31,9 +30,7 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_Rcom_buffer, dicts.Generate_da
         self.diff_list = []
         super().__init__()
         self.setupUi(self)  # Это нужно для инициализации нашего дизайна
-        self.pushButton.clicked.connect(
-            self.find_data
-        )
+        self.pushButton.clicked.connect(self.find_data)
         self.actionSave_to_html.triggered.connect(self.save_to_html)
         self.actionSave_to_txt.triggered.connect(self.save_to_txt)
         self.actionSave_to_markdown.triggered.connect(self.save_to_markdown)
@@ -43,15 +40,23 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_Rcom_buffer, dicts.Generate_da
         self.text_field = self.textEdit
 
     def save_to_txt(self):
-        with open(datetime.strftime(datetime.now(), 'log_%H_%M_%S.txt'), 'w', encoding="utf8") as file:
+        with open(
+                datetime.strftime(datetime.now(), "log_%H_%M_%S.txt"), "w", encoding="utf8"
+        ) as file:
             file.write(str(self.text_field.toPlainText()))
 
     def save_to_html(self):
-        with open(datetime.strftime(datetime.now(), 'log_%H_%M_%S.html'), 'w', encoding="utf8") as file:
+        with open(
+                datetime.strftime(datetime.now(), "log_%H_%M_%S.html"), "w", encoding="utf8"
+        ) as file:
             file.write(str(self.text_field.toHtml()))
 
     def save_to_markdown(self):
-        with open(datetime.strftime(datetime.now(), 'log_Markdown_%H_%M_%S.txt'), 'w', encoding="utf8") as file:
+        with open(
+                datetime.strftime(datetime.now(), "log_Markdown_%H_%M_%S.txt"),
+                "w",
+                encoding="utf8",
+        ) as file:
             file.write(str(self.text_field.toMarkdown()))
 
     def exit_app(self):
@@ -140,18 +145,6 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_Rcom_buffer, dicts.Generate_da
                 logger.debug(self.text)
             except KeyError:
                 logger.debug(self.text)
-
-    def browse_folder(self):
-        self.listWidget.clear()  # На случай, если в списке уже есть элементы
-        directory = QtWidgets.QFileDialog.getExistingDirectory(self, "Выберите папку")
-        # открыть диалог выбора директории и установить значение переменной
-        # равной пути к выбранной директории
-
-        if (
-                directory
-        ):  # не продолжать выполнение, если пользователь не выбрал директорию
-            for file_name in os.listdir(directory):  # для каждого файла в директории
-                self.listWidget.addItem(file_name)  # добавить файл в listWidget
 
 
 def main():
