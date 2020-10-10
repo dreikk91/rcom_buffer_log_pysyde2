@@ -20,7 +20,7 @@ logger.add(
 
 
 @logger.catch()
-class ExampleApp(QtWidgets.QMainWindow, design.Ui_Rcom_buffer, dicts.Generate_data):
+class ExampleApp(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
     def __init__(self):
         # Это здесь нужно для доступа к переменным, методам
         # и т.д. в файле design.py
