@@ -15,12 +15,14 @@ individual_results = {
     16145: "Включен(о)",
     15649: "Версия микропрограммы [0011]",
     15646: "Версия микропрограммы [000F]",
+    15647: "Версия микропрограммы [000F]",
     15645: "Версия микропрограммы [000D]",
     15644: "Версия микропрограммы [000C]",
     15643: "Версия микропрограммы [000B]",
     15650: "Версия микропрограммы [0012]",
     15651: "Версия микропрограммы [0013]",
     15652: "Версия микропрограммы [0014]",
+    16144: "РЕСТАРТ",
     16146: "ППК выведен из режима Консервации",
 }
 
@@ -29,6 +31,9 @@ user_ident = {
 }
 user_ident_2 = {
     2543 + i: "Идентификация ответственного %s" % str(i) for i in range(1, 129)
+}
+user_ident_3 = {
+    24087 + i: "Идентификация ответственного %s" % str(i) for i in range(1, 129)
 }
 module_power_failed = {
     14351 + i: "Авария питания модуля %s" % str(i) for i in range(1, 33)
@@ -52,7 +57,9 @@ poll_module_tamper_open = {
     12559 + i: "Открыта крышка адаптера %s (Опрос)" % str(i) for i in range(1, 33)
 }
 
-guard_on = {16399 + i: "Взято под охрану %s" % str(i) for i in range(1, 1129)}
+guard_on = {16399 + i: "Взято под охрану %s" % str(i) for i in range(1, 129)}
+
+guard_on_1 = {61140 + i: "Взято под охрану %s" % str(i) for i in range(1, 129)}
 poll_guard_on = {
     16655 + i: "Група взято под охрану %s (Опрос)" % str(i) for i in range(1, 129)
 }
@@ -98,9 +105,12 @@ close_box = {12815 + i: "Закрыта крышка %s" % str(i) for i in range
 merged_dict = {
     **individual_results,
     **user_ident,
+    **user_ident_2,
+    **user_ident_3,
     **module_power_failed,
     **module_power_good,
     **guard_on,
+    **guard_on_1,
     **poll_guard_on,
     **guard_off,
     **poll_guard_off,
