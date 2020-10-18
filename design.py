@@ -114,7 +114,7 @@ class Ui_Rcom_buffer(object):
 
     def retranslateUi(self, Rcom_buffer):
         Rcom_buffer.setWindowTitle(QCoreApplication.translate("Rcom_buffer", u"Rcom buffer log", None))
-        self.actionSave_to_txt.setText(QCoreApplication.translate("Rcom_buffer", u"Save as txt", None))
+        self.actionSave_to_txt.setText(QCoreApplication.translate("Rcom_buffer", u"Save as csv", None))
 #if QT_CONFIG(shortcut)
         self.actionSave_to_txt.setShortcut(QCoreApplication.translate("Rcom_buffer", u"Ctrl+S", None))
 #endif // QT_CONFIG(shortcut)

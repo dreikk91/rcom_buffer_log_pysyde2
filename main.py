@@ -1,3 +1,4 @@
+import os
 import sys  # sys нужен для передачи argv в QApplication
 import time
 from datetime import datetime
@@ -40,32 +41,44 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
         self.progressBar.setMaximum(5000)
         self.events = []
         self.text_field = self.textEdit
+        self.count = 0
 
     def save_to_txt(self):
-        with open(
-            datetime.strftime(datetime.now(), "log_%H_%M_%S.txt"), "w", encoding="utf8"
-        ) as file:
-            file.write(str(self.text_field.toPlainText()))
+        try:
+            os.mkdir("log")
+        except OSError as err:
+            print(err)
+        filename = datetime.strftime(datetime.now(), "log_%d_%m_%Y %H.%M.%S.csv")
+        with open("log\\" + filename, "w", encoding="utf8") as file:
+            file.write(str(self.text_field.toPlainText().replace(" |", ";")))
 
     def save_to_html(self):
-        with open(
-            datetime.strftime(datetime.now(), "log_%H_%M_%S.html"), "w", encoding="utf8"
-        ) as file:
+        try:
+            os.mkdir("log")
+        except OSError as err:
+            print(err)
+        filename = datetime.strftime(datetime.now(), "log_%d/%m/%Y %H.%M.%S.html")
+        with open("log\\" + filename, "w", encoding="utf8") as file:
             file.write(str(self.text_field.toHtml()))
 
     def save_to_markdown(self):
-        with open(
-            datetime.strftime(datetime.now(), "log_Markdown_%H_%M_%S.txt"),
-            "w",
-            encoding="utf8",
-        ) as file:
+        try:
+            os.mkdir("log")
+        except OSError as err:
+            print(err)
+        filename = datetime.strftime(datetime.now(), "log_%d/%m/%Y %H.%M.%S.txt")
+        with open("log\\" + filename, "w", encoding="utf8") as file:
             file.write(str(self.text_field.toMarkdown()))
 
     def clear_buffers(self):
         self.text_field.clear()
+        self.diff_list.clear()
+        self.count = 0
 
     def exit_app(self):
         sys.exit(0)
+
+
 
     def find_progress_bar_max(self, value):
         if value >= self.max_val:
@@ -73,7 +86,7 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
         return self.max_val
 
     def find_data(self):
-        self.text_field.append("Program start")
+        self.text_field.append("Count | Date | PPK number | Number of dublicates | Message")
         while True:
             try:
                 QCoreApplication.processEvents()
@@ -91,13 +104,7 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
                         None,
                     )
                 )
-                self.progressBar_2.setMaximum(
-                    self.find_progress_bar_max(
-                        self.find_progress_bar_max(
-                            self.db.Messages.estimated_document_count()
-                        )
-                    )
-                )
+
                 QCoreApplication.processEvents()
                 self.data = self.db.Messages.find()
                 QCoreApplication.processEvents()
@@ -107,9 +114,12 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
                         id_msg_keys = int(id_msg[id_msg.find("X") + 1 :])
                         if id_msg_keys in dicts.merged_dict.keys():
                             self.text = (
-                                "| msg count "
-                                + str(len(self.diff_list))
+                                str(self.count)
                                 + " | "
+                                + datetime.strftime(datetime.now(), "%d/%m/%Y %H:%M:%S")
+                                + " | ППК "
+                                + str(msg["id_ppk"])
+                                + " | Повторних "
                                 + str(
                                     self.events.count(
                                         str(msg["id_ppk"])
@@ -117,10 +127,6 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
                                         + dicts.merged_dict[id_msg_keys]
                                     )
                                 )
-                                + " | "
-                                + datetime.strftime(datetime.now(), "%d/%m/%Y %H:%M:%S")
-                                + " | Номер ППК | "
-                                + str(msg["id_ppk"])
                                 + " | "
                                 + dicts.merged_dict[id_msg_keys]
                             )
@@ -133,6 +139,13 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
                             self.diff_list.append(msg["_id"])
                             self.text_field.append(self.text)
                             self.progressBar.setValue(len(self.diff_list))
+                            self.progressBar_2.setMaximum(
+                                self.find_progress_bar_max(
+                                    self.find_progress_bar_max(
+                                        self.db.Messages.estimated_document_count()
+                                    )
+                                )
+                            )
                             self.progressBar_2.setValue(
                                 self.db.Messages.estimated_document_count()
                             )
@@ -146,6 +159,7 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
                                     None,
                                 )
                             )
+                            self.count += 1
 
                         else:
                             self.text = (
@@ -169,11 +183,11 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
                                     None,
                                 )
                             )
-
+                            self.count += 1
                 time.sleep(0.09)
                 if len(self.diff_list) >= 5000:
                     self.diff_list.clear()
-                if len(self.events) > 500000:
+                if len(self.events) > 5000000:
                     self.events.clear()
             except NameError as err:
                 self.text_field.append(err)
@@ -187,7 +201,7 @@ def main():
     window = Rcom_Buffer_Log()  # Создаём объект класса Rcom_Buffer_Log
     window.show()  # Показываем окно
     app.exec_()  # и запускаем приложение
-    sys.exit(0)
+    sys.exit(window.exit_app())
 
 
 if __name__ == "__main__":  # Если мы запускаем файл напрямую, а не импортируем

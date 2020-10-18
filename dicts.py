@@ -11,6 +11,7 @@ individual_results = {
     363: "Акумулятор разряжен (Опрос)",
     364: "Открыта дверца (Опрос)",
     365: "Закрыта дверца (Опрос)",
+    16148: "Редактирование конфигурации",
     16149: "Проверка связи:  УСПЕШНО",
     16145: "Включен(о)",
     15649: "Версия микропрограммы [0011]",
@@ -60,12 +61,16 @@ poll_module_tamper_open = {
 guard_on = {16399 + i: "Взято под охрану %s" % str(i) for i in range(1, 129)}
 
 guard_on_1 = {61140 + i: "Взято под охрану %s" % str(i) for i in range(1, 129)}
+guard_on_2 = {61441 + i: "Взято под охрану %s" % str(i) for i in range(1, 129)}
 poll_guard_on = {
     16655 + i: "Група взято под охрану %s (Опрос)" % str(i) for i in range(1, 129)
 }
 guard_off = {18447 + i: "Снятие группы %s" % str(i) for i in range(1, 129)}
 poll_guard_off = {
-    18703 + i: "Група знято с охраны %s (Опрос)" % str(i) for i in range(1, 129)
+    18703 + i: "Група снято с охраны %s (Опрос)" % str(i) for i in range(1, 129)
+}
+poll_guard_off_1 = {
+    19193 + i: "Група снято с охраны %s (Опрос)" % str(i) for i in range(1, 129)
 }
 
 module_lost = {13327 + i: "Нет связи с адаптером %s" % str(i) for i in range(1, 129)}
@@ -75,13 +80,19 @@ module_ok = {
 
 line_break = {20495 + i: "Обрыв шлейфа %s" % str(i) for i in range(1, 129)}
 line_break_128 = {20975 + i: "Обрыв шлейфа %s" % str(i) for i in range(1, 129)}
+line_break_128_group_4 = {21455 + i: "Обрыв шлейфа %s група 4" % str(i) for i in range(1, 129)}
 poll_line_break = {20751 + i: "Обрыв шлейфа %s (Опрос)" % str(i) for i in range(1, 129)}
 poll_line_break_128 = {
     21711 + i: "Обрыв шлейфа %s (Опрос)" % str(i) for i in range(1, 129)
 }
+poll_line_break_128_group_2 = {
+    21231 + i: "Обрыв шлейфа %s (Опрос) група 2" % str(i) for i in range(1, 129)
+}
 line_normal = {22543 + i: "Норма шлейфа %s" % str(i) for i in range(1, 129)}
 line_normal_128 = {23023 + i: "Норма шлейфа %s" % str(i) for i in range(1, 129)}
 line_normal_128_1 = {23503 + i: "Норма шлейфа %s" % str(i) for i in range(1, 129)}
+line_wrong_128_1 = {31695 + i: "Шлейф неисправен %s" % str(i) for i in range(1, 129)}
+line_wrong_128_2 = {32175 + i: "Шлейф неисправен %s" % str(i) for i in range(1, 256)}
 poll_line_normal = {
     22799 + i: "Норма шлейфа %s (Опрос)" % str(i) for i in range(1, 129)
 }
@@ -98,7 +109,10 @@ poll_line_normal_128_3 = {
     23983 + i: "Норма шлейфа группа %s (Опрос)" % str(i) for i in range(1, 129)
 }
 poll_line_sc = {28943 + i: "КЗ шлейфа %s (Опрос)" % str(i) for i in range(1, 129)}
+poll_line_wrong = {31951 + i: "Шлейф неисправен %s (Опрос)" % str(i) for i in range(1, 129)}
 line_sc = {30735 + i: "КЗ шлейфа %s" % str(i) for i in range(1, 129)}
+line_sc_1 = {28687 + i: "КЗ шлейфа %s" % str(i) for i in range(1, 129)}
+
 open_box = {12303 + i: "Открыта крышка %s" % str(i) for i in range(1, 129)}
 close_box = {12815 + i: "Закрыта крышка %s" % str(i) for i in range(1, 129)}
 
@@ -135,4 +149,14 @@ merged_dict = {
     **poll_line_normal_128_1,
     **poll_line_normal_128_2,
     **poll_line_break_128,
+    **poll_line_break_128_group_2,
+    **poll_line_wrong,
+    **line_break_128_group_4,
+    **line_wrong_128_1,
+    **line_sc_1,
+    **guard_on_2,
+    **line_wrong_128_2,
+    **poll_guard_off_1
+
+
 }
