@@ -1,4 +1,5 @@
 import os
+import socket
 import sys  # sys нужен для передачи argv в QApplication
 import time
 from datetime import datetime
@@ -78,7 +79,42 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
     def exit_app(self):
         sys.exit(0)
 
+    def send_udp(self, udp_data):
+        self.udp_data = bytes(udp_data, encoding='utf8')
+        self.UDP_IP = "10.32.2.49"
+        self.UDP_PORT = 27009
+        self.sock = socket.socket(socket.AF_INET,  # Internet
+                             socket.SOCK_DGRAM) # UDP
+        self.sock.sendto((self.udp_data), (self.UDP_IP, self.UDP_PORT))
 
+    def write_msg_in_window_if_msg_in_dict(self):
+        self.text = (
+                str(self.count)
+                + " | "
+                + datetime.strftime(datetime.now(), "%d/%m/%Y %H:%M:%S")
+                + " | ППК "
+                + str(self.msg["id_ppk"])
+                + " | Повторних "
+                + str(
+            self.events.count(
+                str(self.msg["id_ppk"])
+                + " | "
+                + dicts.merged_dict[self.id_msg_keys]
+            )
+        )
+                + " | "
+                + dicts.merged_dict[self.id_msg_keys]
+        )
+
+    def write_msg_in_window_if_msg_not_in_dict(self):
+        self.text = (
+                "| msg count "
+                + str(len(self.diff_list))
+                + " | "
+                + datetime.strftime(datetime.now(), "%d/%m/%Y %H:%M:%S")
+                + " | "
+                + str(self.msg)
+        )
 
     def find_progress_bar_max(self, value):
         if value >= self.max_val:
@@ -86,7 +122,9 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
         return self.max_val
 
     def find_data(self):
-        self.text_field.append("Count | Date | PPK number | Number of dublicates | Message")
+        self.text_field.append(
+            "Count | Date | PPK number | Number of dublicates | Message"
+        )
         while True:
             try:
                 QCoreApplication.processEvents()
@@ -108,35 +146,19 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
                 QCoreApplication.processEvents()
                 self.data = self.db.Messages.find()
                 QCoreApplication.processEvents()
-                for msg in self.data:
-                    if msg["_id"] not in self.diff_list:
-                        id_msg = str(msg["id_msg"])
-                        id_msg_keys = int(id_msg[id_msg.find("X") + 1 :])
-                        if id_msg_keys in dicts.merged_dict.keys():
-                            self.text = (
-                                str(self.count)
-                                + " | "
-                                + datetime.strftime(datetime.now(), "%d/%m/%Y %H:%M:%S")
-                                + " | ППК "
-                                + str(msg["id_ppk"])
-                                + " | Повторних "
-                                + str(
-                                    self.events.count(
-                                        str(msg["id_ppk"])
-                                        + " | "
-                                        + dicts.merged_dict[id_msg_keys]
-                                    )
-                                )
-                                + " | "
-                                + dicts.merged_dict[id_msg_keys]
-                            )
-                            # logger.info(self.text)
+                for self.msg in self.data:
+                    if self.msg["_id"] not in self.diff_list:
+                        id_msg = str(self.msg["id_msg"])
+                        self.id_msg_keys = int(id_msg[id_msg.find("X") + 1 :])
+                        if self.id_msg_keys in dicts.merged_dict.keys():
+                            self.write_msg_in_window_if_msg_in_dict()
+                            self.send_udp(self.text)
                             self.events.append(
-                                str(msg["id_ppk"])
+                                str(self.msg["id_ppk"])
                                 + " | "
-                                + dicts.merged_dict[id_msg_keys]
+                                + dicts.merged_dict[self.id_msg_keys]
                             )
-                            self.diff_list.append(msg["_id"])
+                            self.diff_list.append(self.msg["_id"])
                             self.text_field.append(self.text)
                             self.progressBar.setValue(len(self.diff_list))
                             self.progressBar_2.setMaximum(
@@ -160,22 +182,14 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
                                 )
                             )
                             self.count += 1
-
                         else:
-                            self.text = (
-                                "| msg count "
-                                + str(len(self.diff_list))
-                                + " | "
-                                + datetime.strftime(datetime.now(), "%d/%m/%Y %H:%M:%S")
-                                + " | "
-                                + str(msg)
-                            )
-                            logger.info(msg)
+                            self.write_msg_in_window_if_msg_not_in_dict()
+                            logger.info(self.msg)
                             self.progressBar.setValue(len(self.diff_list))
                             self.text_field.append(self.text)
                             QCoreApplication.processEvents()
                             time.sleep(0.01)
-                            self.diff_list.append(msg["_id"])
+                            self.diff_list.append(self.msg["_id"])
                             self.label_2.setText(
                                 QCoreApplication.translate(
                                     "Rcom_buffer",
