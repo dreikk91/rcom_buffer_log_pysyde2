@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'untitledJaNHvV.ui'
+## Form generated from reading UI file 'untitledbVogbh.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.1
 ##
@@ -27,6 +27,8 @@ class Ui_Rcom_buffer(object):
         self.actionSave_to_markdown.setObjectName(u"actionSave_to_markdown")
         self.actionClear_log = QAction(Rcom_buffer)
         self.actionClear_log.setObjectName(u"actionClear_log")
+        self.actionRemove_polls_from_buffer = QAction(Rcom_buffer)
+        self.actionRemove_polls_from_buffer.setObjectName(u"actionRemove_polls_from_buffer")
         self.centralwidget = QWidget(Rcom_buffer)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
@@ -44,7 +46,7 @@ class Ui_Rcom_buffer(object):
 
         self.progressBar = QProgressBar(self.centralwidget)
         self.progressBar.setObjectName(u"progressBar")
-        self.progressBar.setValue(0)
+        self.progressBar.setValue(24)
         self.progressBar.setInvertedAppearance(False)
 
         self.gridLayout.addWidget(self.progressBar, 8, 0, 1, 1)
@@ -73,6 +75,9 @@ class Ui_Rcom_buffer(object):
 
         self.pushButton = QPushButton(self.centralwidget)
         self.pushButton.setObjectName(u"pushButton")
+        self.pushButton.setCheckable(False)
+        self.pushButton.setChecked(False)
+        self.pushButton.setFlat(False)
 
         self.gridLayout.addWidget(self.pushButton, 8, 1, 1, 1)
 
@@ -106,6 +111,7 @@ class Ui_Rcom_buffer(object):
         self.File.addAction(self.actionSave_to_markdown)
         self.menuExit.addAction(self.actionExit)
         self.menuOptions.addAction(self.actionClear_log)
+        self.menuOptions.addAction(self.actionRemove_polls_from_buffer)
 
         self.retranslateUi(Rcom_buffer)
 
@@ -114,7 +120,7 @@ class Ui_Rcom_buffer(object):
 
     def retranslateUi(self, Rcom_buffer):
         Rcom_buffer.setWindowTitle(QCoreApplication.translate("Rcom_buffer", u"Rcom buffer log", None))
-        self.actionSave_to_txt.setText(QCoreApplication.translate("Rcom_buffer", u"Save as csv", None))
+        self.actionSave_to_txt.setText(QCoreApplication.translate("Rcom_buffer", u"Save as txt", None))
 #if QT_CONFIG(shortcut)
         self.actionSave_to_txt.setShortcut(QCoreApplication.translate("Rcom_buffer", u"Ctrl+S", None))
 #endif // QT_CONFIG(shortcut)
@@ -131,6 +137,7 @@ class Ui_Rcom_buffer(object):
         self.actionSave_to_markdown.setShortcut(QCoreApplication.translate("Rcom_buffer", u"Ctrl+M", None))
 #endif // QT_CONFIG(shortcut)
         self.actionClear_log.setText(QCoreApplication.translate("Rcom_buffer", u"Clear log", None))
+        self.actionRemove_polls_from_buffer.setText(QCoreApplication.translate("Rcom_buffer", u"Remove polls from buffer", None))
         self.label.setText(QCoreApplication.translate("Rcom_buffer", u"Log buffer size", None))
         self.label_4.setText(QCoreApplication.translate("Rcom_buffer", u"0/0", None))
         self.label_3.setText(QCoreApplication.translate("Rcom_buffer", u"Rcom buffer size", None))

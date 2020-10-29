@@ -160,3 +160,22 @@ merged_dict = {
 
 
 }
+
+poll_dict =  {
+    **poll_guard_off_1,
+    **poll_module_power_good,
+    **poll_module_tamper_ok,
+    **poll_module_tamper_open,
+    **poll_module_connection_ok,
+    **poll_line_normal_128,
+    **poll_line_normal_128_1,
+    **poll_line_normal_128_2,
+    **poll_line_break_128,
+    **poll_line_break_128_group_2,
+    **poll_line_wrong,
+    **poll_line_normal,
+    **poll_line_sc,
+    **poll_line_break,
+    **poll_guard_off,
+
+}

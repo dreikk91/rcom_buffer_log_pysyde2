@@ -37,6 +37,7 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
         self.actionSave_to_txt.triggered.connect(self.save_to_txt)
         self.actionSave_to_markdown.triggered.connect(self.save_to_markdown)
         self.actionClear_log.triggered.connect(self.clear_buffers)
+        self.actionRemove_polls_from_buffer.triggered.connect(self.clear_poll_buffer)
         self.actionExit.triggered.connect(self.exit_app)
         self.max_val = 0
         self.progressBar.setMaximum(5000)
@@ -74,46 +75,57 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
     def clear_buffers(self):
         self.text_field.clear()
         self.diff_list.clear()
+        self.events.clear()
         self.count = 0
+
+    def clear_poll_buffer(self):
+        self.data = self.db.Messages.find()
+        self.collection_Messages = self.db.Messages
+        for self.msg in self.data:
+            id_msg = str(self.msg["id_msg"])
+            self.id_msg_keys = int(id_msg[id_msg.find("X") + 1:])
+            if self.id_msg_keys in dicts.poll_dict.keys():
+                dict_msg = {'id_msg': id_msg }
+                self.collection_Messages.delete_one(dict_msg)
+
 
     def exit_app(self):
         sys.exit(0)
 
     def send_udp(self, udp_data):
-        self.udp_data = bytes(udp_data, encoding='utf8')
+        self.udp_data = bytes(udp_data, encoding="utf8")
         self.UDP_IP = "10.32.2.49"
         self.UDP_PORT = 27009
-        self.sock = socket.socket(socket.AF_INET,  # Internet
-                             socket.SOCK_DGRAM) # UDP
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # Internet  # UDP
         self.sock.sendto((self.udp_data), (self.UDP_IP, self.UDP_PORT))
 
     def write_msg_in_window_if_msg_in_dict(self):
         self.text = (
-                str(self.count)
-                + " | "
-                + datetime.strftime(datetime.now(), "%d/%m/%Y %H:%M:%S")
-                + " | ППК "
-                + str(self.msg["id_ppk"])
-                + " | Повторних "
-                + str(
-            self.events.count(
-                str(self.msg["id_ppk"])
-                + " | "
-                + dicts.merged_dict[self.id_msg_keys]
+            str(self.count)
+            + " | "
+            + datetime.strftime(datetime.now(), "%d/%m/%Y %H:%M:%S")
+            + " | ППК "
+            + str(self.msg["id_ppk"])
+            + " | Повторних "
+            + str(
+                self.events.count(
+                    str(self.msg["id_ppk"])
+                    + " | "
+                    + dicts.merged_dict[self.id_msg_keys]
+                )
             )
-        )
-                + " | "
-                + dicts.merged_dict[self.id_msg_keys]
+            + " | "
+            + dicts.merged_dict[self.id_msg_keys]
         )
 
     def write_msg_in_window_if_msg_not_in_dict(self):
         self.text = (
-                "| msg count "
-                + str(len(self.diff_list))
-                + " | "
-                + datetime.strftime(datetime.now(), "%d/%m/%Y %H:%M:%S")
-                + " | "
-                + str(self.msg)
+            "| msg count "
+            + str(len(self.diff_list))
+            + " | "
+            + datetime.strftime(datetime.now(), "%d/%m/%Y %H:%M:%S")
+            + " | "
+            + str(self.msg)
         )
 
     def find_progress_bar_max(self, value):
@@ -201,8 +213,9 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
                 time.sleep(0.09)
                 if len(self.diff_list) >= 5000:
                     self.diff_list.clear()
-                if len(self.events) > 5000000:
-                    self.events.clear()
+                if len(self.events) > 100000:
+                    self.save_to_txt()
+                    self.clear_buffers()
             except NameError as err:
                 self.text_field.append(err)
                 logger.debug(self.text)
