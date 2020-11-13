@@ -51,6 +51,11 @@ poll_module_connection_ok = {
     for i in range(1, 33)
 }
 
+poll_module_connection_fail = {
+    13583 + i: "Нет связи с адаптером %s (Опрос)" % str(i)
+    for i in range(1, 33)
+}
+
 poll_module_tamper_ok = {
     13071 + i: "Закрыта крышка адаптера %s (Опрос)" % str(i) for i in range(1, 33)
 }
@@ -61,7 +66,7 @@ poll_module_tamper_open = {
 guard_on = {16399 + i: "Взято под охрану %s" % str(i) for i in range(1, 129)}
 
 guard_on_1 = {61140 + i: "Взято под охрану %s" % str(i) for i in range(1, 129)}
-guard_on_2 = {61441 + i: "Взято под охрану %s" % str(i) for i in range(1, 129)}
+guard_on_2 = {61440 + i: "Взято под охрану %s" % str(i) for i in range(1, 129)}
 poll_guard_on = {
     16655 + i: "Група взято под охрану %s (Опрос)" % str(i) for i in range(1, 129)
 }
@@ -156,7 +161,8 @@ merged_dict = {
     **line_sc_1,
     **guard_on_2,
     **line_wrong_128_2,
-    **poll_guard_off_1
+    **poll_guard_off_1,
+    **poll_module_connection_fail,
 
 
 }
@@ -177,5 +183,6 @@ poll_dict =  {
     **poll_line_sc,
     **poll_line_break,
     **poll_guard_off,
+    **poll_module_connection_fail,
 
 }
