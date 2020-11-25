@@ -19,24 +19,25 @@ logger.add(
     compression="zip",
 )
 
-
+logger.catch()
 try:
-    with open('rcom_client.yaml') as f:
+    with open("rcom_client.yaml") as f:
         yaml_config = yaml.safe_load(f)
 except FileNotFoundError:
     IP = "127.0.0.1"
     PORT = 15555
 
+    to_yaml = {
+        "IP": IP,
+        "PORT": PORT,
+    }
 
-    to_yaml = {'IP': IP,
-               'PORT': PORT,
-               }
-
-    with open('rcom_client.yaml', 'w') as f:
+    with open("rcom_client.yaml", "w") as f:
         yaml.dump(to_yaml, f, default_flow_style=False)
 
-    with open('rcom_client.yaml') as f:
+    with open("rcom_client.yaml") as f:
         yaml_config = yaml.safe_load(f)
+
 
 @logger.catch()
 class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
@@ -47,8 +48,8 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.sock.settimeout(0.01)
         # self.sock.bind(("", 47585))
-        print(yaml_config['IP'], yaml_config['PORT'])
-        self.addr = (yaml_config['IP'], yaml_config['PORT'])
+        print(yaml_config["IP"], yaml_config["PORT"])
+        self.addr = (yaml_config["IP"], yaml_config["PORT"])
         super().__init__()
         self.setupUi(self)  # Это нужно для инициализации нашего дизайна
         self.pushButton.clicked.connect(self.run_async_main)
@@ -113,20 +114,20 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
                 )
                 self.udp_data, self.addr = self.sock.recvfrom(10240)
                 print(self.addr[0])
-                print(self.udp_data.decode('utf8'))
-                self.result = self.udp_data.decode('utf8').split(',')
+                print(self.udp_data.decode("utf8"))
+                self.result = self.udp_data.decode("utf8").split(",")
                 print(self.result[0])
                 self.sock.sendto(
                     (("ok").encode("utf8")), (self.addr[0], self.addr[1]),
                 )
                 await asyncio.sleep(0.01)
-                if self.result[0] == 'buffer_count':
+                if self.result[0] == "buffer_count":
                     self.current_progressbar_value = int(self.result[1])
                     self.max_progressbar_value = int(self.result[2])
                     await self.buffer_count()
                     self.progressBar_2.setValue(int(self.current_progressbar_value))
                     self.progressBar_2.setMaximum(int(self.max_progressbar_value))
-                if self.result[0] == 'text_field':
+                if self.result[0] == "text_field":
                     self.text_window = self.result[1]
 
                     self.text_field.append(self.text_window)
@@ -143,19 +144,21 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
                 await asyncio.sleep(5.1)
                 continue
 
-
-
     async def buffer_count(self):
-        self.label_4.setText(QCoreApplication.translate("Rcom_buffer", u"{0}/{1}".format(self.current_progressbar_value, self.max_progressbar_value), None))
-
-
+        self.label_4.setText(
+            QCoreApplication.translate(
+                "Rcom_buffer",
+                u"{0}/{1}".format(
+                    self.current_progressbar_value, self.max_progressbar_value
+                ),
+                None,
+            )
+        )
 
     async def update_window(self):
         while True:
             QCoreApplication.processEvents()
             await asyncio.sleep(0.03)
-
-
 
     async def get_data_from_db_and_write_to_main_window(self):
         self.text_field.append(
@@ -192,5 +195,5 @@ def main():
     sys.exit(window.exit_app)
 
 
- # Если мы запускаем файл напрямую, а не импортируем
+# Если мы запускаем файл напрямую, а не импортируем
 main()  # то запускаем функцию main()

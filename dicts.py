@@ -52,8 +52,11 @@ poll_module_connection_ok = {
 }
 
 poll_module_connection_fail = {
-    13583 + i: "Нет связи с адаптером %s (Опрос)" % str(i)
-    for i in range(1, 33)
+    13583 + i: "Нет связи с адаптером %s (Опрос)" % str(i) for i in range(1, 33)
+}
+
+module_fault = {
+    15887 + i: "Неисправность 485 интерфейса %s адаптер" % str(i) for i in range(1, 33)
 }
 
 poll_module_tamper_ok = {
@@ -85,10 +88,16 @@ module_ok = {
 
 line_break = {20495 + i: "Обрыв шлейфа %s" % str(i) for i in range(1, 129)}
 line_break_128 = {20975 + i: "Обрыв шлейфа %s" % str(i) for i in range(1, 129)}
-line_break_128_group_4 = {21455 + i: "Обрыв шлейфа %s група 4" % str(i) for i in range(1, 129)}
+line_break_128_1 = {21935 + i: "Обрыв шлейфа %s" % str(i) for i in range(1, 129)}
+line_break_128_group_4 = {
+    21455 + i: "Обрыв шлейфа %s група 4" % str(i) for i in range(1, 129)
+}
 poll_line_break = {20751 + i: "Обрыв шлейфа %s (Опрос)" % str(i) for i in range(1, 129)}
 poll_line_break_128 = {
     21711 + i: "Обрыв шлейфа %s (Опрос)" % str(i) for i in range(1, 129)
+}
+poll_line_break_128_1 = {
+    22191 + i: "Обрыв шлейфа %s (Опрос)" % str(i) for i in range(1, 129)
 }
 poll_line_break_128_group_2 = {
     21231 + i: "Обрыв шлейфа %s (Опрос) група 2" % str(i) for i in range(1, 129)
@@ -96,6 +105,7 @@ poll_line_break_128_group_2 = {
 line_normal = {22543 + i: "Норма шлейфа %s" % str(i) for i in range(1, 129)}
 line_normal_128 = {23023 + i: "Норма шлейфа %s" % str(i) for i in range(1, 129)}
 line_normal_128_1 = {23503 + i: "Норма шлейфа %s" % str(i) for i in range(1, 129)}
+line_normal_128_2 = {23983 + i: "Норма шлейфа %s" % str(i) for i in range(1, 129)}
 line_wrong_128_1 = {31695 + i: "Шлейф неисправен %s" % str(i) for i in range(1, 129)}
 line_wrong_128_2 = {32175 + i: "Шлейф неисправен %s" % str(i) for i in range(1, 256)}
 poll_line_normal = {
@@ -110,64 +120,68 @@ poll_line_normal_128_1 = {
 poll_line_normal_128_2 = {
     23759 + i: "Норма шлейфа группа %s (Опрос)" % str(i) for i in range(1, 129)
 }
-poll_line_normal_128_3 = {
-    23983 + i: "Норма шлейфа группа %s (Опрос)" % str(i) for i in range(1, 129)
-}
+
 poll_line_sc = {28943 + i: "КЗ шлейфа %s (Опрос)" % str(i) for i in range(1, 129)}
-poll_line_wrong = {31951 + i: "Шлейф неисправен %s (Опрос)" % str(i) for i in range(1, 129)}
+poll_line_wrong = {
+    31951 + i: "Шлейф неисправен %s (Опрос)" % str(i) for i in range(1, 129)
+}
 line_sc = {30735 + i: "КЗ шлейфа %s" % str(i) for i in range(1, 129)}
 line_sc_1 = {28687 + i: "КЗ шлейфа %s" % str(i) for i in range(1, 129)}
+line_sc_2 = {29647 + i: "КЗ шлейфа %s" % str(i) for i in range(1, 129)}
 
 open_box = {12303 + i: "Открыта крышка %s" % str(i) for i in range(1, 129)}
 close_box = {12815 + i: "Закрыта крышка %s" % str(i) for i in range(1, 129)}
 
 merged_dict = {
-    **individual_results,
+    **close_box,
+    **guard_off,
+    **guard_on,
+    **guard_on_1,
+    **guard_on_2,
+    **line_break,
+    **line_break_128,
+    **line_break_128_1,
+    **line_break_128_group_4,
+    **line_normal,
+    **line_normal_128,
+    **line_normal_128_1,
+    **line_normal_128_2,
+    **line_sc,
+    **line_sc_1,
+    **line_sc_2,
+    **line_wrong_128_1,
+    **line_wrong_128_2,
+    **module_fault,
+    **module_lost,
+    **module_ok,
+    **module_power_failed,
+    **module_power_good,
+    **open_box,
+    **poll_guard_off,
+    **poll_guard_off_1,
+    **poll_guard_on,
+    **poll_line_break,
+    **poll_line_break_128,
+    **poll_line_break_128_1,
+    **poll_line_break_128_group_2,
+    **poll_line_normal,
+    **poll_line_normal_128,
+    **poll_line_normal_128_1,
+    **poll_line_normal_128_2,
+    **poll_line_sc,
+    **poll_line_wrong,
+    **poll_module_connection_fail,
+    **poll_module_connection_ok,
+    **poll_module_power_good,
+    **poll_module_tamper_ok,
+    **poll_module_tamper_open,
     **user_ident,
     **user_ident_2,
     **user_ident_3,
-    **module_power_failed,
-    **module_power_good,
-    **guard_on,
-    **guard_on_1,
-    **poll_guard_on,
-    **guard_off,
-    **poll_guard_off,
-    **line_break,
-    **poll_line_break,
-    **line_normal,
-    **poll_line_normal,
-    **poll_line_sc,
-    **line_sc,
-    **open_box,
-    **close_box,
-    **module_lost,
-    **module_ok,
-    **line_break_128,
-    **line_normal_128,
-    **line_normal_128_1,
-    **poll_module_power_good,
-    **poll_module_tamper_ok,
-    **poll_module_tamper_open,
-    **poll_module_connection_ok,
-    **poll_line_normal_128,
-    **poll_line_normal_128_1,
-    **poll_line_normal_128_2,
-    **poll_line_break_128,
-    **poll_line_break_128_group_2,
-    **poll_line_wrong,
-    **line_break_128_group_4,
-    **line_wrong_128_1,
-    **line_sc_1,
-    **guard_on_2,
-    **line_wrong_128_2,
-    **poll_guard_off_1,
-    **poll_module_connection_fail,
-
-
+    **individual_results,
 }
 
-poll_dict =  {
+poll_dict = {
     **poll_guard_off_1,
     **poll_module_power_good,
     **poll_module_tamper_ok,
@@ -184,5 +198,4 @@ poll_dict =  {
     **poll_line_break,
     **poll_guard_off,
     **poll_module_connection_fail,
-
 }

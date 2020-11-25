@@ -30,7 +30,7 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.sock.settimeout(0.01)
         self.sock.bind(("", 15555))
-        self.addr = ('127.0.0.1', 15555)
+        self.addr = ("127.0.0.1", 15555)
         client = MongoClient("mongodb://localhost:27017/")
         self.db = client.DBClientsPPK
         self.diff_list = []
@@ -102,71 +102,34 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
         while True:
             try:
                 self.udp_data, self.addr = self.sock.recvfrom(10240)
-                self.result = self.udp_data.decode('utf8').split(',')
-                if self.result[0] == 'clear_poll_buffer':
+                self.result = self.udp_data.decode("utf8").split(",")
+                self.ip_dict = { "ip": self.addr[0], "port": self.addr[1] }
+                if self.result[0] == "clear_poll_buffer":
                     self.clear_poll_buffer()
-                    logger.info('Clear ok')
-                if self.addr not in self.addr_list:
-                    self.addr_list.append(self.addr)
+                    logger.info("Clear ok")
+
+                if self.ip_dict not in self.addr_list:
+                    self.addr_list.append(self.ip_dict)
                     for ip in self.addr_list:
-                        logger.info('connection from {0}'.format(ip))
-
-            except socket.timeout:
-                await asyncio.sleep(1)
-            except ConnectionResetError as err:
-                logger.debug(err)
-                await asyncio.sleep(1)
-                continue
-            except OSError as err:
-                logger.debug(err)
-                await asyncio.sleep(1)
-                continue
-
-
-    async def send_udp(self):
-        print(self.udp_data)
-        await asyncio.sleep(0.01)
-        for self.ip in self.addr_list:
-            logger.info(self.ip)
-            try:
-                await asyncio.sleep(0.03)
-                self.sock.sendto(
-                    (
-                        ("buffer_count, {0}, {1}\n")
-                            .format(
-                            self.db.Messages.estimated_document_count(),
-                            self.find_progress_bar_max(
-                                self.db.Messages.estimated_document_count() - 1
-                            ),
+                        logger.info(
+                            "connection from {0}:{1}".format(ip['ip'], ip['port'])
                         )
-                            .encode("utf8")
-                    ),
-                    (self.ip[0], self.ip[1]),
-                )
-                await asyncio.sleep(0.03)
-                self.sock.sendto(
-                    (
-                        ("text_field, {1}")
-                            .format(0, self.text)
-                            .encode("utf8")
-                    ),
-                    (self.addr[0], self.addr[1]),
-                )
+
 
             except socket.timeout:
                 await asyncio.sleep(1)
             except ConnectionResetError as err:
                 logger.debug(err)
+                self.addr_list.clear()
                 await asyncio.sleep(1)
                 continue
             except OSError as err:
                 logger.debug(err)
                 await asyncio.sleep(1)
                 continue
-            except AttributeError as err:
-                logger.debug(err)
-                await asyncio.sleep(1)
+            except KeyError:
                 continue
+
 
     def dup_count(self):
         dup = self.events.count(
@@ -222,7 +185,7 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
                         )
                         .encode("utf8")
                     ),
-                    (self.ip[0], self.ip[1]),
+                    (self.ip['ip'], self.ip['port']),
                 )
             except socket.timeout:
                 await asyncio.sleep(1)
@@ -243,7 +206,6 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
     def progressbar_2_get_maximum(self):
         self.progressBar_2.setValue(self.db.Messages.estimated_document_count())
 
-
     async def set_progressbar_2_maximum(self):
         self.progressBar_2.setMaximum(
             self.find_progress_bar_max(
@@ -251,21 +213,20 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
             )
         )
 
-
     async def get_data_from_db_and_write_to_main_window(self):
         self.text_field.append(
             "Count | Date | PPK number | Number of dublicates | Message"
         )
         while True:
-            await asyncio.sleep(0.11)
+            await asyncio.sleep(0.01)
             try:
                 await asyncio.sleep(1)
                 await self.buffer_count()
                 self.data = self.db.Messages.find()
                 for self.msg in self.data:
-                    await asyncio.sleep(0.05)
+                    await asyncio.sleep(0.01)
                     if self.msg["_id"] not in self.diff_list:
-                        await asyncio.sleep(0.05)
+                        await asyncio.sleep(0.01)
                         id_msg = str(self.msg["id_msg"])
                         self.id_msg_keys = int(id_msg[id_msg.find("X") + 1 :])
                         if self.id_msg_keys in dicts.merged_dict.keys():
@@ -278,8 +239,7 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
                             self.diff_list.append(self.msg["_id"])
 
                             self.text_field.append(self.text)
-                            await asyncio.sleep(0.03)
-                            # await self.send_udp()
+                            await asyncio.sleep(0.01)
                             for self.ip in self.addr_list:
                                 try:
                                     self.sock.sendto(
@@ -288,7 +248,7 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
                                             .format(0, self.text)
                                             .encode("utf8")
                                         ),
-                                        (self.ip[0], self.ip[1]),
+                                        (self.ip['ip'], self.ip['port']),
                                     )
                                 except socket.timeout:
                                     await asyncio.sleep(1)
@@ -319,14 +279,18 @@ class Rcom_Buffer_Log(QtWidgets.QMainWindow, design.Ui_Rcom_buffer):
                             self.count += 1
                 if len(self.diff_list) >= 5000:
                     self.diff_list.clear()
-                if len(self.events) > 50000:
+                if len(self.events) > 20000:
                     self.save_to_csv()
                     self.clear_buffers()
             except NameError as err:
                 self.text_field.append(err)
                 logger.debug(self.text)
+                await asyncio.sleep(1)
+                continue
             except KeyError:
                 logger.debug(self.text)
+                await asyncio.sleep(1)
+                continue
             except AttributeError as err:
                 logger.debug(err)
                 await asyncio.sleep(1)
